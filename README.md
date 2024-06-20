@@ -1,5 +1,5 @@
 ### 🌟 DevJr.
-Com intuito de praticar várias lingugagens de programação, pedi ao famoso (ChatGPT/OpenIA)[openai.com] que me preposse um desafio em qualquer linguagem que ele tenha conhecimento no seu banco de dados. Este foi o resultado.
+Com intuito de praticar várias lingugagens de programação, pedi ao famoso [ChatGPT/OpenIA](https://openai.com) que me preposse um desafio em qualquer linguagem que ele tenha conhecimento no seu banco de dados. Este foi o resultado.
 
 # ToDoList
 Desenvolvimento de um sistema de lista de tarefas básico em Python para praticar conceitos fundamentais da linguagem.
