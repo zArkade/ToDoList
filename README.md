@@ -1,5 +1,14 @@
+# Data das entregas:
+- **Projeto iniciado - 20/06/2024**
+- **Primeira sprint - 21/06/2024**
+- **Segunda sprint -**
+- **Terceira sprint (Projeto Finalizado) -**
+- **Quarta sprint -**  
+
+---
+
 ### 🌟 DevJr.
-Com intuito de praticar várias lingugagens de programação, pedi ao famoso [ChatGPT/OpenIA](https://openai.com) que me preposse um desafio em qualquer linguagem que ele tenha conhecimento no seu banco de dados. Este foi o resultado.
+Com intuito de praticar várias lingugagens de programação, pedi ao famoso [ChatGPT/OpenIA](https://openai.com), que me preposse um desafio em qualquer linguagem que ele tenha conhecimento no seu banco de dados. Este foi o resultado.
 
 # ToDoList
 Desenvolvimento de um sistema de lista de tarefas básico em Python para praticar conceitos fundamentais da linguagem.
