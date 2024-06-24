@@ -1,7 +1,7 @@
 # Data das entregas:
 - **Projeto iniciado - 20/06/2024**
 - **Primeira sprint - 21/06/2024**
-- **Segunda sprint -**
+- **Segunda sprint - 24/06/2024**
 - **Terceira sprint (Projeto Finalizado) -**
 - **Quarta sprint -**  
 
