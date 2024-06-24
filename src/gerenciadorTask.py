@@ -32,20 +32,20 @@ def mark_task_completed(task_index):
     try:
         task = tasks[task_index]
         if task["completed"]:
-            print(f"Tarefa '{task['description']}' já está concluída.")
-            print("\n")
+            # print(f"Tarefa '{task['description']}' já está concluída.")
+            # print("\n")
             escolha = input("Deseja marcar como pendente? (s/n): ").lower()
-            print("\n")
+            # print("\n")
             if escolha == "s":
                 task["completed"] = False
-                print(f"Tarefa '{task['description']}' marcada como pendente.")
-                print("\n")
+                # print(f"Tarefa '{task['description']}' marcada como pendente.")
+                # print("\n")
             else:
                 print(f"Tarefa '{task['description']}' permanece concluída.")
-                print("\n")
+                # print("\n")
         else:
             task["completed"] = True
-            print(f"Tarefa '{task['description']}' marcada como concluída.")
+            # print(f"Tarefa '{task['description']}' marcada como concluída.")
     except IndexError:
         print("Índice de tarefa inválido.")
 
@@ -53,9 +53,22 @@ def mark_task_completed(task_index):
 def remove_task(task_index):
     try:
         remove_task = tasks.pop(task_index)
-        print(f"Tarefa '{remove_task['description']}' removida da lista.")
+        # print(f"Tarefa '{remove_task['description']}' removida da lista.")
     except IndexError:
         print("Índice de tarefa inválido. Confira o índice para exclusão.")
+
+#edição de tarefa
+def edit_task(task_index, new_description):
+    try:
+        task = tasks[task_index]
+        task['description'] = new_description
+        # print(f"Tarefa {task_index + 1 } atualizada para: '{new_description}'.")
+    except IndexError:
+        print("Índice de tarefa inválido.")
+
+def search_tasks(query):
+    return [task for task in tasks if query.lower() in task['description'].lower()]
+
 
 #salva a lista de tasks no json
 def save_tasks():
@@ -75,7 +88,9 @@ def load_tasks():
                     if "description" not in task or "completed" not in task:
                         raise ValueError("Formato de tarefa inválido no arquivo.")
             # print("Tarefas carregadas.")
-        except json.JSONDecodeError:
+        except json.JSONDecodeError as e:
             #se o json estiver vazio ou invalido, incia como uma lista vazia
             tasks = []
             # print("Arquivo de tarefas vazio ou invalido. Erro ao carregar tarefas: {e}. A lista será excluída e será iniciada uma lista vazia para uso.")
+    else:
+        print(f"O arquivo {DATA_FILE} não foi encontrado.")
