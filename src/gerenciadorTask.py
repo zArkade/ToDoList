@@ -8,12 +8,14 @@ DATA_FILE = Path("data/tasks.json")
 tasks = []
 
 #cria a task
-def add_task(description):
+def add_task(description, due_date = None):
     #descricao da task e se ela esta feita ou não
     task = {
         "description": description,
         "completed": False
     }
+    if due_date:
+        task["due_date"] = due_date
     #adiciona a task na lista
     tasks.append(task)
     # print(f"Tarefa adicionada com a seguinte descrição: '{description}'.")

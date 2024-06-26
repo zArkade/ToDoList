@@ -1,4 +1,5 @@
 import tkinter as tk
+import datetime
 from tkinter import messagebox
 from tkinter import simpledialog
 from gerenciadorTask import add_task, edit_task, list_tasks, mark_task_completed, remove_task, save_tasks, load_tasks, search_tasks, tasks
@@ -18,6 +19,7 @@ class ToDoListApp:
 
         self.due_date_entry = tk.Entry(self.frame, width=15)
         self.due_date_entry.pack(side=tk.LEFT, padx=(0, 10))
+        self.due_date_entry.bind("<KeyRelease>", self.validate_date_input)
 
         self.add_button = tk.Button(self.frame, text = "Adicionar uma Tarefa", command = self.add_task)
         self.add_button.pack( side = tk.LEFT)
@@ -55,11 +57,26 @@ class ToDoListApp:
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.search_task()
 
+    def validate_date_input(self, event):
+        input_text = self.due_date_entry.get()
+        if not all(c.isdigit() or c in "/-" for c in input_text):
+            self.due_date_entry.delete(len(input_text) - 1, tk.END)
+
     def add_task(self):
         description = self.task_entry.get()
         due_date = self.due_date_entry.get()
         if description:
-            add_task(description)
+            if due_date:
+                try:
+                    due_date_obj = datetime.datetime.strptime(due_date, "%d/%m/%Y")
+                    if due_date_obj.date() <= datetime.date.today():
+                        messagebox.showwarning("Data Inválida", "A data deve ser posterior ao dia de hoje.")
+                        return
+                except ValueError:
+                    messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AAAA.")
+                    return
+
+            add_task(description, due_date)
             self.unsaved_changes = True
             self.task_entry.delete(0, tk.END)
             self.due_date_entry.delete(0, tk.END)
