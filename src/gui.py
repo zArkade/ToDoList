@@ -68,12 +68,12 @@ class ToDoListApp:
         if description:
             if due_date:
                 try:
-                    due_date_obj = datetime.datetime.strptime(due_date, "%d/%m/%Y")
+                    due_date_obj = datetime.datetime.strptime(due_date, "%d/%m/%y")
                     if due_date_obj.date() <= datetime.date.today():
                         messagebox.showwarning("Data Inválida", "A data deve ser posterior ao dia de hoje.")
                         return
                 except ValueError:
-                    messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AAAA.")
+                    messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AA.")
                     return
 
             add_task(description, due_date)
@@ -126,15 +126,21 @@ class ToDoListApp:
         messagebox.showinfo("Salvar tarefas", "Tarefas salvas com sucesso")
 
     def update_task_list(self):
-        # print("Atualizando lista de tarefas...")  
+        #print("Atualizando lista de tarefas...")  
         self.task_listbox.delete(0, tk.END)
         for task in tasks:
             status = "Concluída" if task["completed"] else "Pendente"
-            if "due_date" in task:
-                self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - Prazo: {task['due_date']}")
-            else:
-                self.task_listbox.insert(tk.END, f"{task['description']} [{status}]")
-        # print("Lista de tarefas atualizada:", tasks)
+            due_date = f" - Prazo: {task['due_date']}" if "due_date" in task else ""
+            self.task_listbox.insert(tk.END, f"{task['description']} [{status}]{due_date}")
+        #print("Lista de tarefas atualizada:", tasks)
+
+    def format_date(self, *args):
+        value = self.due_date_var.get()
+        if len(value) == 2 or len(value) == 5:
+            if not (value.endswith('/') or value.endswith('/')):
+                self.due_date_var.set(value + '/')
+        elif len(value) > 10:
+            self.due_date_var.set(value[:10])
 
     def search_task(self):
         query = self.search_entry.get()
