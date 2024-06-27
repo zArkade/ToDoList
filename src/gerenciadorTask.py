@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from datetime import datetime
 
 # Definição do caminho para onde as tasks serão salvas
 DATA_FILE = Path("data/tasks.json")
@@ -7,36 +8,38 @@ DATA_FILE = Path("data/tasks.json")
 # Inicia uma lista vazia
 tasks = []
 
-# Função para adicionar uma nova tarefa
+# Cria uma task
 def add_task(description, due_date=None):
-        # Verifica se a data é válida e posterior ao dia atual
-    try:
-        due_date_obj = datetime.strptime(due_date, "%d/%m/%Y")
-        if due_date_obj.date() <= datetime.today().date():
-            raise ValueError("A data deve ser posterior ao dia de hoje.")
-    except ValueError as e:
-        raise ValueError(f"Data inválida: {e}")
+    global tasks
+    # Verifica se a data é válida e posterior ao dia atual
+    if due_date:
+        try:
+            due_date_obj = datetime.strptime(due_date, "%d/%m/%y")
+            if due_date_obj.date() <= datetime.today().date():
+                raise ValueError("A data deve ser posterior ao dia de hoje.")
+        except ValueError as e:
+            raise ValueError(f"Data inválida: {e}")
+
     # Cria um dicionário para a tarefa com descrição e status de conclusão
     task = {
         "description": description,
         "completed": False,
         "due_date": due_date
     }
-    # Adiciona a data de vencimento se fornecida
-    if due_date:
-        task["due_date"] = due_date
+
     # Adiciona a tarefa na lista
     tasks.append(task)
+    save_tasks()
     # print(f"Tarefa adicionada com a seguinte descrição: '{description}'.")
 
-# Função para listar todas as tarefas com índice e status
+# Lista todas as tarefas com índice e status
 def list_tasks():
     if not tasks:
         print("Não existe nenhuma tarefa na lista.")
     else:
         for idx, task in enumerate(tasks):
-            status = "Concluída" if task.get("completed") else "Pendente"
-            print(f"{idx + 1}. {task['description']} [{status}]")
+            status = "Concluída" if task.get ("completed") else "Pendente"
+            print (f"{idx + 1}.{task['description']} [{status}]")
 
 # Função para marcar uma tarefa como concluída ou pendente
 def mark_task_completed(task_index):
