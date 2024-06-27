@@ -1,5 +1,5 @@
 import tkinter as tk
-import datetime
+from datetime import datetime
 from tkinter import messagebox
 from tkinter import simpledialog
 from gerenciadorTask import add_task, edit_task, list_tasks, mark_task_completed, remove_task, save_tasks, load_tasks, search_tasks, tasks
@@ -59,31 +59,30 @@ class ToDoListApp:
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.search_task()
 
-    def validate_date_input(self, event):
-        input_text = self.due_date_entry.get()
-        if not all(c.isdigit() or c in "/-" for c in input_text):
-            self.due_date_entry.delete(len(input_text) - 1, tk.END)
-
     def add_task(self):
         description = self.task_entry.get()
         due_date = self.due_date_var.get()
 
         if description:
-            if due_date:
+            if due_date and due_date != "__/__/__":
                 try:
-                    due_date_obj = datetime.datetime.strptime(due_date, "%d/%m/%y")
-                    if due_date_obj.date() <= datetime.date.today():
+                    due_date_obj = datetime.strptime(due_date, "%d/%m/%y")
+                    if due_date_obj.date() <= datetime.today().date():
                         messagebox.showwarning("Data Inválida", "A data deve ser posterior ao dia de hoje.")
                         return
                 except ValueError:
                     messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AA.")
                     return
 
-            add_task(description, due_date)
-            self.task_entry.delete(0, tk.END)
-            self.due_date_var.set("__/__/__")
-            self.update_task_list()
-            self.unsaved_changes = True
+            try:
+                add_task(description, due_date if due_date != "__/__/__" else None)
+                self.task_entry.delete(0, tk.END)
+                self.due_date_var.set("__/__/__")
+                self.unsaved_changes = True
+                self.update_task_list()
+                self.load_tasks()
+            except ValueError as e:
+                messagebox.showwarning("Erro", str(e))
 
     def mark_task(self):
         try:
@@ -116,7 +115,7 @@ class ToDoListApp:
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para editar.")
         self.search_task()
-    
+
     def load_tasks(self):
         load_tasks()
         self.unsaved_changes = False
@@ -126,60 +125,41 @@ class ToDoListApp:
     def save_tasks(self):
         save_tasks()
         self.unsaved_changes = False
-        messagebox.showinfo("Salvar tarefas", "Tarefas salvas com sucesso")
-
-    def update_task_list(self):
-        #print("Atualizando lista de tarefas...")  
-        self.task_listbox.delete(0, tk.END)
-        for task in tasks:
-            status = "Concluída" if task["completed"] else "Pendente"
-            due_date = f" - Prazo: {task['due_date']}" if "due_date" in task else ""
-            self.task_listbox.insert(tk.END, f"{task['description']} [{status}]{due_date}")
-        #print("Lista de tarefas atualizada:", tasks)
-
-    def format_date(self, *args):
-        value = self.due_date_var.get()
-        if len(value) == 2 or len(value) == 5:
-            if not (value.endswith('/') or value.endswith('/')):
-                self.due_date_var.set(value + '/')
-        elif len(value) > 10:
-            self.due_date_var.set(value[:10])
+        messagebox.showinfo("Salvar tarefas", "Tarefas salvas com sucesso!")
 
     def search_task(self):
         query = self.search_entry.get()
-        results = search_tasks(query)
-        self.task_listbox.delete(0, tk.END)
-        for task in results:
-            status = "Concluída" if task["completed"] else "Pendente"
-            if "due_date" in task:
-                self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - Prazo: {task['due_date']}")
-            else:
-                self.task_listbox.insert(tk.END, f"{task['description']} [{status}]")
-
-    def filter_tasks(self, selection):
-        if selection == "Concluídas":
-            filtered_tasks = [task for task in tasks if task["completed"]]
-        elif selection == "Pendentes":
-            filtered_tasks = [task for task in tasks if not task["completed"]]
-        else:
-            filtered_tasks = tasks
-
+        filtered_tasks = search_tasks(query)
         self.task_listbox.delete(0, tk.END)
         for task in filtered_tasks:
-            status = "Concluída" if task["completed"] else "Pendente"
-            due_date = f" - Prazo: {task['due_date']}" if "due_date" in task else ""
-            self.task_listbox.insert(tk.END, f"{task['description']} [{status}]{due_date}")
+            status = "Concluída" if task.get("completed") else "Pendente"
+            due_date = task.get("due_date", "Sem data")
+            self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - {due_date}")
+
+    def update_task_list(self):
+        self.task_listbox.delete(0, tk.END)
+        for task in tasks:
+            status = "Concluída" if task.get("completed") else "Pendente"
+            due_date = task.get("due_date", "Sem data")
+            self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - {due_date}")
+
+    def filter_tasks(self, filter_value):
+        self.update_task_list()
 
     def on_closing(self):
         if self.unsaved_changes:
-            if messagebox.askyesno("Sair", "Você tem tarefas não salvas. Deseja salvar antes de sair?"):
+            if messagebox.askokcancel("Sair", "Há alterações não salvas. Deseja salvar antes de sair?"):
                 self.save_tasks()
-            else:
-                if messagebox.askyesno("Sair", "Tem certeza de que deseja sair sem salvar?"):
-                    self.root.destroy()
-        else:
-            self.root.destroy()
+        self.root.destroy()
 
+    def format_date(self, event):
+        content = self.due_date_var.get()
+        if len(content) == 2 and content[0].isdigit() and content[1].isdigit():
+            self.due_date_var.set(content + '/')
+            self.due_date_entry.icursor(len(content) + 1)
+        elif len(content) == 5 and content[3].isdigit() and content[4].isdigit():
+            self.due_date_var.set(content + '/')
+            self.due_date_entry.icursor(len(content) + 1)
 
 if __name__ == "__main__":
     root = tk.Tk()
