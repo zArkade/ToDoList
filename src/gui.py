@@ -83,6 +83,7 @@ class ToDoListApp:
             self.task_entry.delete(0, tk.END)
             self.due_date_var.set("__/__/__")
             self.update_task_list()
+            self.unsaved_changes = True
 
     def mark_task(self):
         try:
@@ -123,7 +124,7 @@ class ToDoListApp:
         self.search_task()
 
     def save_tasks(self):
-        load_tasks()
+        save_tasks()
         self.unsaved_changes = False
         messagebox.showinfo("Salvar tarefas", "Tarefas salvas com sucesso")
 
@@ -166,9 +167,8 @@ class ToDoListApp:
         self.task_listbox.delete(0, tk.END)
         for task in filtered_tasks:
             status = "Concluída" if task["completed"] else "Pendente"
-            self.task_listbox.insert(tk.END, f"{task['description']} [{status}]")
-
-        self.search_task()
+            due_date = f" - Prazo: {task['due_date']}" if "due_date" in task else ""
+            self.task_listbox.insert(tk.END, f"{task['description']} [{status}]{due_date}")
 
     def on_closing(self):
         if self.unsaved_changes:
