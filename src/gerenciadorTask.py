@@ -9,10 +9,18 @@ tasks = []
 
 # Função para adicionar uma nova tarefa
 def add_task(description, due_date=None):
+        # Verifica se a data é válida e posterior ao dia atual
+    try:
+        due_date_obj = datetime.strptime(due_date, "%d/%m/%Y")
+        if due_date_obj.date() <= datetime.today().date():
+            raise ValueError("A data deve ser posterior ao dia de hoje.")
+    except ValueError as e:
+        raise ValueError(f"Data inválida: {e}")
     # Cria um dicionário para a tarefa com descrição e status de conclusão
     task = {
         "description": description,
-        "completed": False
+        "completed": False,
+        "due_date": due_date
     }
     # Adiciona a data de vencimento se fornecida
     if due_date:
