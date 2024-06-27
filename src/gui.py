@@ -17,9 +17,11 @@ class ToDoListApp:
         self.task_entry = tk.Entry(self.frame, width = 40)
         self.task_entry.pack( side = tk.LEFT, padx = (0,10))
 
-        self.due_date_entry = tk.Entry(self.frame, width=15)
+        self.due_date_var = tk.StringVar()
+        self.due_date_entry = tk.Entry(self.frame, width=10, textvariable=self.due_date_var)
         self.due_date_entry.pack(side=tk.LEFT, padx=(0, 10))
-        self.due_date_entry.bind("<KeyRelease>", self.validate_date_input)
+        self.due_date_var.set("__/__/__")
+        self.due_date_entry.bind("<KeyRelease>", self.format_date)
 
         self.add_button = tk.Button(self.frame, text = "Adicionar uma Tarefa", command = self.add_task)
         self.add_button.pack( side = tk.LEFT)
@@ -64,7 +66,8 @@ class ToDoListApp:
 
     def add_task(self):
         description = self.task_entry.get()
-        due_date = self.due_date_entry.get()
+        due_date = self.due_date_var.get()
+
         if description:
             if due_date:
                 try:
@@ -77,9 +80,8 @@ class ToDoListApp:
                     return
 
             add_task(description, due_date)
-            self.unsaved_changes = True
             self.task_entry.delete(0, tk.END)
-            self.due_date_entry.delete(0, tk.END)
+            self.due_date_var.set("__/__/__")
             self.update_task_list()
 
     def mark_task(self):
