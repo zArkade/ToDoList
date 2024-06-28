@@ -80,7 +80,6 @@ class ToDoListApp:
                 self.due_date_var.set("__/__/__")
                 self.update_task_list()
                 self.unsaved_changes = True
-                self.update_task_list()
                 self.load_tasks()
             except ValueError as e:
                 messagebox.showwarning("Erro", str(e))
@@ -100,8 +99,7 @@ class ToDoListApp:
             task_index = self.task_listbox.curselection()[0]
             remove_task(task_index)
             self.unsaved_changes = True
-            self.update_task_list()
-            self.search_task()
+            self.load_tasks()
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para remover.")
 
@@ -149,9 +147,13 @@ class ToDoListApp:
 
     def on_closing(self):
         if self.unsaved_changes:
-            if messagebox.askokcancel("Sair", "Há alterações não salvas. Deseja salvar antes de sair?"):
+            if messagebox.askyesno("Sair", "Você tem tarefas não salvas. Deseja salvar antes de sair?"):
                 self.save_tasks()
-        self.root.destroy()
+            else:
+                if messagebox.askyesno("Sair", "Tem certeza de que deseja sair sem salvar?"):
+                    self.root.destroy()
+        else:
+            self.root.destroy()
 
     def format_date(self, event):
         content = self.due_date_var.get()
