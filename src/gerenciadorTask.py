@@ -67,13 +67,20 @@ def remove_task(task_index):
         print("Índice de tarefa inválido. Confira o índice para exclusão.")
 
 # Função para editar a descrição de uma tarefa
-def edit_task(task_index, new_description):
+def edit_task(task_index, new_description, new_due_date):
     try:
         task = tasks[task_index]
         task['description'] = new_description
+        if new_due_date:
+            due_date_obj = datetime.datetime.strtime(new_due_date, "%d/%m/%y")
+            if due_date_obj.date() <= datetime.datetime.today().date():
+                raise ValueError("A data informada deve ser posterior ao dia de hoje.")
+            task['due_date'] = new_due_date
         # print(f"Tarefa {task_index + 1} atualizada para: '{new_description}'.")
     except IndexError:
         print("Índice de tarefa inválido.")
+    except ValueError as e:
+        print(f"Erro na data de entrega: {e}")
 
 # Função para buscar tarefas com base em uma query
 def search_tasks(query):

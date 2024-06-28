@@ -106,14 +106,25 @@ class ToDoListApp:
     def edit_task(self):
         try:
             task_index = self.task_listbox.curselection()[0]
-            new_description = simpledialog.askstring("Editar Tarefa", "Nova descrição da tarefa:")
+            task = tasks[task_index]
+            new_description = simpledialog.askstring("Editar Tarefa", "Nova descrição da tarefa:", initialvalue=task['description'])
+            new_due_date = simpledialog.askstring("Editar Prazo", "Novo prazo da tarefa (DD/MM/AAAA):", initialvalue=task.get('due_date', ''))
+
             if new_description:
-                self.unsaved_changes = True
-                edit_task(task_index, new_description)
-                self.update_task_list()
+                try:
+                    if new_due_date:
+                        due_date_obj = datetime.datetime.strptime(new_due_date, "%d/%m/%Y")
+                        if due_date_obj.date() <= datetime.datetime.today().date():
+                            messagebox.showwarning("Data Inválida", "A data deve ser posterior ao dia de hoje.")
+                            return
+                    edit_task(task_index, new_description, new_due_date)
+                    self.unsaved_changes = True
+                    self.update_task_list()
+                    self.search_task()
+                except ValueError:
+                    messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AAAA.")
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para editar.")
-        self.search_task()
 
     def load_tasks(self):
         load_tasks()
