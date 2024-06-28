@@ -1,3 +1,11 @@
+## Primeiros passos
+
+Execute o código abaixo para abrir o programa:
+
+```bash
+python src/gui.py
+```
+
 # Data das entregas:
 - **Projeto iniciado - 20/06/2024**
 - **Primeira sprint - 21/06/2024**
