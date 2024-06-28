@@ -2,7 +2,7 @@
 - **Projeto iniciado - 20/06/2024**
 - **Primeira sprint - 21/06/2024**
 - **Segunda sprint - 24/06/2024**
-- **Terceira sprint (Projeto Finalizado) -**
+- **Terceira sprint (Projeto Finalizado) - 28/06/2024**
 - **Quarta sprint -**  
 
 ---
