@@ -78,6 +78,7 @@ class ToDoListApp:
                 add_task(description, due_date if due_date != "__/__/__" else None)
                 self.task_entry.delete(0, tk.END)
                 self.due_date_var.set("__/__/__")
+                self.update_task_list()
                 self.unsaved_changes = True
                 self.update_task_list()
                 self.load_tasks()
