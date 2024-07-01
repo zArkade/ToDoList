@@ -168,41 +168,42 @@ class ToDoListApp:
 
     def search_task(self):
         query = self.search_entry.get()
-        filtered_tasks = search_tasks(query)
+        results = search_tasks(query)
         self.task_listbox.delete(0, tk.END)
-        for task in filtered_tasks:
-            status = "Concluída" if task.get("completed") else "Pendente"
-            due_date = task.get("due_date", "Sem data")
-            self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - {due_date}")
+        for task in results:
+            status = "Concluída" if task["completed"] else "Pendente"
+            if "due_date" in task:
+                self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - Prazo: {task['due_date']}")
+            else:
+                self.task_listbox.insert(tk.END, f"{task['description']} [{status}]")
 
-    def update_task_list(self):
-        self.task_listbox.delete(0, tk.END)
-        for task in tasks:
-            status = "Concluída" if task.get("completed") else "Pendente"
-            due_date = task.get("due_date", "Sem data")
-            self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - {due_date}")
+    def filter_tasks(self, *args):
+        filtered_tasks = []
 
-    def filter_tasks(self, filter_value):
-        self.update_task_list()
+        # if filter_option == "Todas":
+        #     filtered_tasks = tasks
+        # elif filter_option == "Concluídas":
+        #     filtered_tasks = [task for task in tasks if task["completed"]]
+        # elif filter_option == "Pendentes":
+        #     filtered_tasks = [task for task in tasks if not task["completed"]]
+
+        # filter_option = self.filter_var.get()
+
+        # self.task_listbox.delete(0, tk.END)
+        # for task in filtered_tasks:
+        #     status = "Concluída" if task["completed"] else "Pendente"
+        #     if "due_date" in task:
+        #         self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - Prazo: {task['due_date']}")
+        #     else:
+        #         self.task_listbox.insert(tk.END, f"{task['description']} [{status}]")
+
+        self.filter_tasks()
 
     def on_closing(self):
         if self.unsaved_changes:
-            if messagebox.askyesno("Sair", "Você tem tarefas não salvas. Deseja salvar antes de sair?"):
+            if messagebox.askokcancel("Sair", "Você tem alterações não salvas. Deseja salvar antes de sair?"):
                 self.save_tasks()
-            else:
-                if messagebox.askyesno("Sair", "Tem certeza de que deseja sair sem salvar?"):
-                    self.root.destroy()
-        else:
-            self.root.destroy()
-
-    def format_date(self, event):
-        content = self.due_date_var.get()
-        if len(content) == 2 and content[0].isdigit() and content[1].isdigit():
-            self.due_date_var.set(content + '/')
-            self.due_date_entry.icursor(len(content) + 1)
-        elif len(content) == 5 and content[3].isdigit() and content[4].isdigit():
-            self.due_date_var.set(content + '/')
-            self.due_date_entry.icursor(len(content) + 1)
+        self.root.destroy()
 
 if __name__ == "__main__":
     root = tk.Tk()
