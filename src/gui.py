@@ -121,8 +121,10 @@ class ToDoListApp:
     def remove_task(self):
         try:
             task_index = self.task_listbox.curselection()[0]
-            remove_task(task_index)
+            remove_task_completed(task_index)
             self.unsaved_changes = True
+            self.update_task_list()
+            self.search_task()
             self.load_tasks()
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para remover.")
