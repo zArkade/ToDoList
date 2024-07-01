@@ -158,10 +158,13 @@ class ToDoListApp:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para editar.")
         self.search_task()
 
-    def save_tasks(self):
-        save_tasks()
-        self.unsaved_changes = False
-        messagebox.showinfo("Salvar tarefas", "Tarefas salvas com sucesso!")
+    def format_date(self, *args):
+            value = self.due_date_var.get()
+            if len(value) == 2 or len(value) == 5:
+                if not (value.endswith('/') or value.endswith('/')):
+                    self.due_date_var.set(value + '/')
+            elif len(value) > 10:
+                self.due_date_var.set(value[:10])    
 
     def search_task(self):
         query = self.search_entry.get()
