@@ -86,15 +86,25 @@ class ToDoListApp:
                     messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AA.")
                     return
 
-            try:
-                add_task(description, due_date if due_date != "__/__/__" else None)
-                self.task_entry.delete(0, tk.END)
-                self.due_date_var.set("__/__/__")
-                self.update_task_list()
-                self.unsaved_changes = True
-                self.load_tasks()
-            except ValueError as e:
-                messagebox.showwarning("Erro", str(e))
+            add_task(description, due_date)
+            self.task_entry.delete(0, tk.END)
+            self.due_date_var.set("__/__/__")
+            self.update_task_list()
+            
+        self.load_tasks()
+
+    def load_tasks(self):
+        load_tasks()
+        self.unsaved_changes = False
+        self.update_task_list()
+        self.search_task()
+
+    def save_tasks(self):
+        save_tasks()
+        self.unsaved_changes = False
+        messagebox.showinfo("Salvar tarefas", "Tarefas salvas com sucesso!")
+        self.update_task_list()
+        self.search_task()
 
     def mark_task(self):
         try:
