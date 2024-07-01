@@ -128,14 +128,13 @@ class ToDoListApp:
             self.load_tasks()
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para remover.")
+        
+        self.search_task()
 
-    def edit_task(self):
+    def edit_task_completed(self):
         try:
             task_index = self.task_listbox.curselection()[0]
-            task = tasks[task_index]
-            new_description = simpledialog.askstring("Editar Tarefa", "Nova descrição da tarefa:", initialvalue=task['description'])
-            new_due_date = simpledialog.askstring("Editar Prazo", "Novo prazo da tarefa (DD/MM/AAAA):", initialvalue=task.get('due_date', ''))
-
+            new_description = simpledialog.askstring("Editar Tarefa", "Nova descrição da tarefa:")
             if new_description:
                 try:
                     if new_due_date:
@@ -144,18 +143,19 @@ class ToDoListApp:
                             messagebox.showwarning("Data Inválida", "A data deve ser posterior ao dia de hoje.")
                             return
                     edit_task(task_index, new_description, new_due_date)
-                    self.unsaved_changes = True
-                    self.update_task_list()
-                    self.search_task()
-                except ValueError:
-                    messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AAAA.")
+                self.unsaved_changes = True
+                edit_task_completed(task_index, new_description)
+                #     self.update_task_list()
+                #     self.update_task_list()
+                #     self.search_task()
+                # except ValueError:
+                #     messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AAAA.")
+                # self.update_task_list()
+                #     self.search_task()
+                # except ValueError:
+                #     messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AAAA.")
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para editar.")
-
-    def load_tasks(self):
-        load_tasks()
-        self.unsaved_changes = False
-        self.update_task_list()
         self.search_task()
 
     def save_tasks(self):
