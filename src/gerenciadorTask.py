@@ -52,11 +52,12 @@ def mark_task_completed(task_index):
         print("Índice de tarefa inválido.")
 
 # Função para remover uma tarefa da lista
-def remove_task(task_index):
-    try:
-        remove_task = tasks.pop(task_index)
-        # print(f"Tarefa '{remove_task['description']}' removida da lista.")
-    except IndexError:
+def remove_task_completed(task_index):
+    global tasks
+    if 0 <= task_index < len(tasks):
+        tasks.pop(task_index)
+        save_tasks()
+    else:
         print("Índice de tarefa inválido. Confira o índice para exclusão.")
 
 # Função para editar a descrição de uma tarefa
