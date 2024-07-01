@@ -43,19 +43,12 @@ def list_tasks():
 
 # Função para marcar uma tarefa como concluída ou pendente
 def mark_task_completed(task_index):
-    try:
+    global tasks
+    if 0 <= task_index < len(tasks):
         task = tasks[task_index]
-        if task["completed"]:
-            escolha = input("Deseja marcar como pendente? (s/n): ").lower()
-            if escolha == "s":
-                task["completed"] = False
-                # print(f"Tarefa '{task['description']}' marcada como pendente.")
-            else:
-                print(f"Tarefa '{task['description']}' permanece concluída.")
-        else:
-            task["completed"] = True
-            # print(f"Tarefa '{task['description']}' marcada como concluída.")
-    except IndexError:
+        task["completed"] = not task["completed"]
+        save_tasks()
+    else:
         print("Índice de tarefa inválido.")
 
 # Função para remover uma tarefa da lista
