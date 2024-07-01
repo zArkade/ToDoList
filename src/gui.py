@@ -59,6 +59,18 @@ class ToDoListApp:
         self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.search_task()
 
+    def update_task_list(self):
+        self.task_listbox.delete(0, tk.END)
+        for idx, task in enumerate(tasks):
+            status = "Concluída" if task["completed"] else "Pendente"
+            due_date = f" - Prazo: {task['due_date']}" if "due_date" in task else ""
+            self.task_listbox.insert(tk.END, f"{idx + 1}. {task['description']} [{status}]{due_date}")
+
+    def validate_date_input(self, event):
+        input_text = self.due_date_entry.get()
+        if not all(c.isdigit() or c in "/-" for c in input_text):
+            self.due_date_entry.delete(len(input_text) - 1, tk.END)
+
     def add_task(self):
         description = self.task_entry.get()
         due_date = self.due_date_var.get()
