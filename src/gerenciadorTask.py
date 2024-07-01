@@ -82,17 +82,15 @@ def save_tasks():
 
 # Função para carregar as tarefas do arquivo JSON se ele existir
 def load_tasks():
+    global tasks
     if DATA_FILE.exists():
         try:
             with open(DATA_FILE, 'r') as file:
-                global tasks
                 tasks = json.load(file)
                 for task in tasks:
                     if "description" not in task or "completed" not in task:
                         raise ValueError("Formato de tarefa inválido no arquivo.")
-            # print("Tarefas carregadas.")
         except json.JSONDecodeError as e:
-            # Se o JSON estiver vazio ou inválido, inicia como uma lista vazia
             tasks = []
             print(f"Arquivo de tarefas vazio ou inválido. Erro ao carregar tarefas: {e}. A lista será excluída e uma lista vazia será iniciada para uso.")
     else:
