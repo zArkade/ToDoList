@@ -116,6 +116,8 @@ class ToDoListApp:
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para marcar como concluída.")
 
+        self.search_task()
+
     def remove_task(self):
         try:
             task_index = self.task_listbox.curselection()[0]
