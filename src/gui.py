@@ -51,7 +51,6 @@ class ToDoListApp:
         self.search_button.pack(padx = 10, pady = (0, 10))
 
         self.filter_var = tk.StringVar(value = "Todas")
-
         self.filter_menu = tk.OptionMenu(root, self.filter_var, "Todas", "Concluídas", "Pendentes", command = self.filter_tasks)
         self.filter_menu.pack(padx = 10, pady = (10, 10))
 
