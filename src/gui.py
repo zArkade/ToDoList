@@ -172,25 +172,19 @@ class ToDoListApp:
     def filter_tasks(self, selection):
         self.task_listbox.delete(0, tk.END)
         filtered_tasks = []
+        if selection == "Concluídas":
+            filtered_tasks = [task for task in tasks if task["completed"]]
+        elif selection == "Pendentes":
+            filtered_tasks = [task for task in tasks if not task["completed"]]
+        else:
+            filtered_tasks = tasks
 
-        # if filter_option == "Todas":
-        #     filtered_tasks = tasks
-        # elif filter_option == "Concluídas":
-        #     filtered_tasks = [task for task in tasks if task["completed"]]
-        # elif filter_option == "Pendentes":
-        #     filtered_tasks = [task for task in tasks if not task["completed"]]
+        for idx, task in enumerate(filtered_tasks):
+            status = "Concluída" if task["completed"] else "Pendente"
+            due_date = f" - Prazo: {task['due_date']}" if "due_date" in task else ""
+            self.task_listbox.insert(tk.END, f"{idx + 1}. {task['description']} [{status}]{due_date}")
 
-        # filter_option = self.filter_var.get()
-
-        # self.task_listbox.delete(0, tk.END)
-        # for task in filtered_tasks:
-        #     status = "Concluída" if task["completed"] else "Pendente"
-        #     if "due_date" in task:
-        #         self.task_listbox.insert(tk.END, f"{task['description']} [{status}] - Prazo: {task['due_date']}")
-        #     else:
-        #         self.task_listbox.insert(tk.END, f"{task['description']} [{status}]")
-
-        self.filter_tasks()
+        self.search_task()
 
     def on_closing(self):
         if self.unsaved_changes:
