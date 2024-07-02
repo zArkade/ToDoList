@@ -169,7 +169,8 @@ class ToDoListApp:
             else:
                 self.task_listbox.insert(tk.END, f"{task['description']} [{status}]")
 
-    def filter_tasks(self, *args):
+    def filter_tasks(self, selection):
+        self.task_listbox.delete(0, tk.END)
         filtered_tasks = []
 
         # if filter_option == "Todas":
