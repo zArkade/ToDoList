@@ -9,7 +9,7 @@ DATA_FILE = Path("data/tasks.json")
 tasks = []
 
 # Cria uma task
-def add_task(description, due_date=None):
+def add_task(description, due_date = None):
     global tasks
     # Verifica se a data é válida e posterior ao dia atual
     if due_date:
@@ -39,6 +39,7 @@ def list_tasks():
         for idx, task in enumerate(tasks):
             status = "Concluída" if task.get ("completed") else "Pendente"
             print (f"{idx + 1}.{task['description']} [{status}]")
+    return tasks
 
 # Função para marcar uma tarefa como concluída ou pendente
 def mark_task_completed(task_index):
@@ -58,12 +59,12 @@ def remove_task_completed(task_index):
         print("Índice de tarefa inválido. Confira o índice para exclusão.")
 
 # Função para editar a descrição de uma tarefa
-def edit_task_completed(task_index, new_description = None, new_due_date = None):
-    try:
-        task = tasks[task_index]
-        task['description'] = new_description
+def edit_task_completed(index, new_description, new_due_date=None):
+    tasks[index]["description"] = new_description
+    if new_due_date:
+        tasks[index]["due_date"] = new_due_date
         # print(f"Tarefa {task_index + 1 } atualizada para: '{new_description}'.")
-    except IndexError:
+    else:
         print("Índice de tarefa inválido.")
 
 # Função para buscar tarefas com base em uma query
@@ -75,6 +76,7 @@ def save_tasks():
     # Abre o arquivo em modo de escrita e salva a lista de tarefas como JSON
     with open(DATA_FILE, 'w') as file:
         json.dump(tasks, file)
+    save_tasks()
     # print("Tarefas salvas.")
 
 # Função para carregar as tarefas do arquivo JSON se ele existir
