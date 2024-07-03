@@ -29,7 +29,6 @@ def add_task(description, due_date=None):
 
     # Adiciona a tarefa na lista
     tasks.append(task)
-    save_tasks()
     # print(f"Tarefa adicionada com a seguinte descrição: '{description}'.")
 
 # Lista todas as tarefas com índice e status
@@ -47,7 +46,6 @@ def mark_task_completed(task_index):
     if 0 <= task_index < len(tasks):
         task = tasks[task_index]
         task["completed"] = not task["completed"]
-        save_tasks()
     else:
         print("Índice de tarefa inválido.")
 
@@ -56,7 +54,6 @@ def remove_task_completed(task_index):
     global tasks
     if 0 <= task_index < len(tasks):
         tasks.pop(task_index)
-        save_tasks()
     else:
         print("Índice de tarefa inválido. Confira o índice para exclusão.")
 

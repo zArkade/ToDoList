@@ -94,14 +94,11 @@ class ToDoListApp:
     def load_tasks(self):
         load_tasks()
         self.unsaved_changes = False
-        self.update_task_list()
-        self.search_task()
 
     def save_tasks(self):
         save_tasks()
         self.unsaved_changes = False
         messagebox.showinfo("Salvar tarefas", "Tarefas salvas com sucesso!")
-        self.update_task_list()
         self.search_task()
 
     def mark_task(self):
@@ -109,8 +106,6 @@ class ToDoListApp:
             task_index = self.task_listbox.curselection()[0]
             mark_task_completed(task_index)
             self.unsaved_changes = True
-            self.update_task_list()
-            self.search_task()
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para marcar como concluída.")
 
@@ -121,9 +116,6 @@ class ToDoListApp:
             task_index = self.task_listbox.curselection()[0]
             remove_task_completed(task_index)
             self.unsaved_changes = True
-            self.update_task_list()
-            self.search_task()
-            self.load_tasks()
         except IndexError:
             messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para remover.")
         
