@@ -179,9 +179,13 @@ class ToDoListApp:
 
     def on_closing(self):
         if self.unsaved_changes:
-            if messagebox.askokcancel("Sair", "Você tem alterações não salvas. Deseja salvar antes de sair?"):
+            if messagebox.askyesno("Sair", "Você tem tarefas não salvas. Deseja salvar antes de sair?"):
                 self.save_tasks()
-        self.root.destroy()
+            else:
+                if messagebox.askyesno("Sair", "Tem certeza de que deseja sair sem salvar?"):
+                    self.root.destroy()
+        else:
+            self.root.destroy()
 
 if __name__ == "__main__":
     root = tk.Tk()
