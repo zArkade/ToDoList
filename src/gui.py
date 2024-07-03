@@ -1,7 +1,6 @@
 import tkinter as tk
 from datetime import datetime
-from tkinter import messagebox
-from tkinter import simpledialog
+from tkinter import messagebox, simpledialog
 from gerenciadorTask import add_task, edit_task_completed, list_tasks, mark_task_completed, remove_task_completed, save_tasks, load_tasks, search_tasks, tasks
 
 class ToDoListApp:
