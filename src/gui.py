@@ -74,7 +74,7 @@ class ToDoListApp:
         due_date = self.due_date_var.get()
 
         if description:
-            if due_date and due_date != "__/__/__":
+            if due_date:
                 try:
                     due_date_obj = datetime.strptime(due_date, "%d/%m/%y")
                     if due_date_obj.date() <= datetime.today().date():
