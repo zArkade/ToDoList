@@ -29,7 +29,7 @@ class ToDoListApp:
         self.task_listbox.pack(padx = 10, pady = (10, 0))
 
         self.mark_button = tk.Button(root, text = "Marcar como concluída", command = self.mark_task)
-        self.mark_button.pack(side = tk.LEFT, padx=10, pady=(10, 10))
+        self.mark_button.pack(side = tk.LEFT, padx = 10, pady = (10, 10))
 
         self.remove_button = tk.Button(root, text = "Remover Tarefa", command = self.remove_task)
         self.remove_button.pack(side = tk.LEFT, padx = 10, pady = (10, 10))
