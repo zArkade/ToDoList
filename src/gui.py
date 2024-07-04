@@ -129,6 +129,17 @@ class ToDoListApp:
         
         if selection == "Descrição":
             edit_task_completed(task_index, new_description)
+        elif selection == "Data":
+            edit_task_completed(task_index, new_due_date)
+        else:
+            return KeyError
+
+        # try:
+        # task_index = self.task_listbox.curselection()[0]
+        # new_description = simpledialog.askstring("Editar Tarefa", "Nova descrição da tarefa:")
+        # if new_description:
+        #     self.unsaved_changes = True
+        #     edit_task_completed(task_index, new_description)
                 #     self.update_task_list()
                 #     self.update_task_list()
                 #     self.search_task()
