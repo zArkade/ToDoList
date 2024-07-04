@@ -149,8 +149,8 @@ class ToDoListApp:
                 #     self.search_task()
                 # except ValueError:
                 #     messagebox.showwarning("Formato de Data Inválido", "Por favor, insira uma data válida no formato DD/MM/AAAA.")
-        except IndexError:
-            messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para editar.")
+        # except IndexError:
+        #     messagebox.showwarning("Seleção Inválida", "Por favor, selecione uma tarefa para editar.")
         self.search_task()
 
     def format_date(self, *args):
