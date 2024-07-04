@@ -40,7 +40,8 @@ class ToDoListApp:
         self.load_button = tk.Button(root, text = "Carregar Tarefas", command = self.load_tasks)
         self.load_button.pack(side = tk.LEFT, padx = 10, pady = (10, 10))
 
-        self.edit_button = tk.Button(root, text = "Editar Tarefa", command = self.edit_task_completed)
+        self.edit_var = tk.StringVar(value = "Editar Tarefa")
+        self.edit_button = tk.OptionMenu(root, self.edit_var, "Descrição", "Data de entrega", command = self.edit_task_completed)
         self.edit_button.pack(side = tk.LEFT, padx = 10, pady = (10, 10))
 
         self.search_entry = tk.Entry(root, width = 40)
