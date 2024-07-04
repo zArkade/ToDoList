@@ -122,13 +122,13 @@ class ToDoListApp:
         
         self.search_task()
 
-    def edit_task_completed(self):
-        try:
-            task_index = self.task_listbox.curselection()[0]
-            new_description = simpledialog.askstring("Editar Tarefa", "Nova descrição da tarefa:")
-            if new_description:
-                self.unsaved_changes = True
-                edit_task_completed(task_index, new_description)
+    def edit_task_completed(self, selection):
+        task_index = self.task_listbox.curselection()[0]
+        new_description = simpledialog.askstring("Editar Tarefa", "Nova descrição:")
+        new_due_date = simpledialog.askstring("Editar Tarefa", "Nova data de entrega:")
+        
+        if selection == "Descrição":
+            edit_task_completed(task_index, new_description)
                 #     self.update_task_list()
                 #     self.update_task_list()
                 #     self.search_task()
